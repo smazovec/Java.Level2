@@ -9,23 +9,22 @@ public class EchoServer {
 
     try (ServerSocket serverSocket = new ServerSocket(8189)) {
       System.out.println("Сервер запущен, ожидаем подключения...");
-      Connection connection = Connection.openConnection(serverSocket);
-      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+      final Connection connection = Connection.openConnection(serverSocket);
+      final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
       System.out.println("Клиент подключился");
       connection.sendMessage("Успешно подключен к серверу");
 
       new Thread(() -> {
         try {
           while (true) {
-            String inMessage = connection.receiveMessage();
-            System.out.println("Клиент: " + inMessage);
-            if (connection.isEndMessage()) {
+            String outMessage = bufferedReader.readLine();
+            if (connection.isClosed()) {
               break;
             }
+            if (outMessage != null) {
+              connection.sendMessage(outMessage);
+            }
           }
-          connection.sendEndMessage();
-          connection.closeConnection();
-          System.out.println("Серверное соединение закрыто");
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -34,14 +33,15 @@ public class EchoServer {
       new Thread(() -> {
         try {
           while (true) {
-            String outMessage = bufferedReader.readLine();
-            if (outMessage != null) {
-              connection.sendMessage(outMessage);
-            }
+            String inMessage = connection.receiveMessage();
             if (connection.isEndMessage()) {
               break;
             }
+            System.out.println("Клиент: " + inMessage);
           }
+          connection.sendEndMessage();
+          connection.closeConnection();
+          System.out.println("Серверное соединение закрыто");
         } catch (IOException e) {
           e.printStackTrace();
         }

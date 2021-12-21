@@ -4,12 +4,12 @@ import java.io.InputStreamReader;
 
 public class EchoClient {
 
-  private final String SERVER_ADDR = "localhost";
+  private final String SERVER_ADDR = "192.168.50.132";
   private final int SERVER_PORT = 8189;
 
   public EchoClient() throws IOException {
-    Connection connection = Connection.openConnection(SERVER_ADDR, SERVER_PORT);
-    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    final Connection connection = Connection.openConnection(SERVER_ADDR, SERVER_PORT);
+    final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
     new Thread(() -> {
       try {
@@ -30,13 +30,13 @@ public class EchoClient {
 
     new Thread(() -> {
       try {
-        while (true) {
+        while (!connection.isClosed()) {
           String outMessage = bufferedReader.readLine();
+          if (connection.isClosed()) {
+            break;
+          }
           if (outMessage != null) {
             connection.sendMessage(outMessage);
-          }
-          if (connection.isEndMessage()) {
-            break;
           }
         }
       } catch (Exception e) {

@@ -1,4 +1,3 @@
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.IO;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,7 +9,7 @@ public class Connection {
   public static final String END_MESSAGE = "/end";
 
   private final Socket socket;
-  public final DataInputStream in;
+  private final DataInputStream in;
   private final DataOutputStream out;
   private String inMessage;
 
@@ -52,7 +51,7 @@ public class Connection {
     }
   }
 
-  public void sendMessage(String message) throws IOException{
+  public void sendMessage(String message) throws IOException {
     this.out.writeUTF(message);
   }
 
@@ -68,4 +67,9 @@ public class Connection {
   public boolean isEndMessage() {
     return inMessage.equals(END_MESSAGE);
   }
+
+  public boolean isClosed() {
+    return socket.isClosed();
+  }
+
 }
