@@ -11,6 +11,7 @@ import ru.geekbrains.java.service.implementation.BaseAuthService;
 public class MyServer {
 
   private static final int PORT = 8189;
+
   private List<ClientHandler> clients;
   private AuthService authService;
 
@@ -52,6 +53,16 @@ public class MyServer {
     clients.forEach(o -> o.sendMsg(msg));
   }
 
+  public synchronized void privateMsg(String msg, String recipient, String sender) {
+    clients.stream().filter(o -> o.getName().equals(recipient) || o.getName().equals(sender)).forEach(o -> o.sendMsg(msg));
+  }
+
+  public synchronized void sendOnlineClients() {
+    StringBuffer clientListBuffer = new StringBuffer();
+    clients.forEach(o -> clientListBuffer.append(";" + o.getName()));
+    broadcastMsg("/clientlst" + clientListBuffer.toString());
+  }
+
   public synchronized void unsubscribe(ClientHandler o) {
     clients.remove(o);
   }
@@ -59,4 +70,5 @@ public class MyServer {
   public synchronized void subscribe(ClientHandler o) {
     clients.add(o);
   }
+
 }

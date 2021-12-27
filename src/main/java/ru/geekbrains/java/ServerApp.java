@@ -1,3 +1,5 @@
+package ru.geekbrains.java;
+
 import ru.geekbrains.java.service.MyServer;
 
 public class ServerApp {

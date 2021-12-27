@@ -6,6 +6,6 @@ public interface AuthService {
 
   void stop();
 
-  String getNickByLoginPass(String login, String pass);
+  String loginUser(String login, String pass);
 
 }
