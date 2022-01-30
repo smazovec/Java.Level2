@@ -3,9 +3,7 @@ package ru.geekbrains.java;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -43,6 +41,9 @@ public class ClientApp extends JFrame {
   private DataOutputStream out;
   private String currentRecipient = ALL_RECIPIENT;
   private String nick = "";
+  private File history_file;
+  private BufferedWriter history_writer;
+  private BufferedReader history_reader;
 
   public ClientApp() {
     try {
@@ -63,7 +64,8 @@ public class ClientApp extends JFrame {
           while (true) {
             String strFromServer = in.readUTF();
             if (strFromServer.startsWith("/authok")) {
-              setTitle(strFromServer.substring(strFromServer.indexOf(";") + 1).trim());
+              nick = strFromServer.substring(strFromServer.indexOf(";") + 1).trim();
+              setTitle(nick);
               setAuthorized(true);
               break;
             } else if (strFromServer.equalsIgnoreCase("/end")) {
@@ -80,6 +82,15 @@ public class ClientApp extends JFrame {
               continue;
             }
             chatArea.append(strFromServer + "\n");
+
+            // Запись истории чата
+            try (BufferedWriter history_writer = new BufferedWriter(
+                new FileWriter(history_file, true))) {
+              history_writer.write(strFromServer + "\n");
+
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
           }
         } catch (Exception e) {
           e.printStackTrace();
@@ -217,6 +228,30 @@ public class ClientApp extends JFrame {
   private void setAuthorized(boolean authorized) {
     bottomPanel.setVisible(authorized);
     loginPanel.setVisible(!authorized);
+
+    history_file = new File("./history_" + nick.trim() + ".txt");
+
+    // восстановление истории сообщений
+    if (!history_file.exists()) {
+      try {
+        history_file.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    try (LineNumberReader lnr = new LineNumberReader(new FileReader(history_file));
+        BufferedReader history_reader = new BufferedReader(new FileReader(history_file))) {
+
+      // не придумал другого способа, кроме как создать LineNumberReader
+      // и через него получить общее количество строк в файле истории
+      long historyLinesCount = lnr.lines().count();
+      history_reader.lines().skip(historyLinesCount > 100 ? historyLinesCount - 100 : 0)
+          .forEach(s -> chatArea.append(s + "\n"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
   }
 
   private boolean iAuthorized() {

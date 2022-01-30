@@ -49,10 +49,9 @@ public class BaseAuthService implements AuthService {
 
     public BaseAuthService() {
         entries = new ArrayList<>();
-        Connection dbCon;
 
         try {
-            dbCon = DBConnection.getInstance();
+            Connection dbCon = DBConnection.getInstance();
             Statement stmt = dbCon.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
             while (rs.next()) {
