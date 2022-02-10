@@ -5,12 +5,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.geekbrains.java.handler.ClientHandler;
 import ru.geekbrains.java.service.implementation.BaseAuthService;
 
 public class MyServer {
 
   private static final int PORT = 8189;
+  private static final Logger LOGGER = LogManager.getLogger(MyServer.class);
 
   private List<ClientHandler> clients;
   private AuthService authService;
@@ -20,22 +23,23 @@ public class MyServer {
   }
 
   public MyServer() {
-    System.out.println("Сервер запустился");
+    LOGGER.info("Server is run");
     try (ServerSocket server = new ServerSocket(PORT)) {
       authService = new BaseAuthService();
       authService.start();
       clients = new ArrayList<>();
       while (true) {
-        System.out.println("Сервер ожидает подключения...");
+        LOGGER.info("Server waiting connection...");
         Socket socket = server.accept();
-        System.out.println("Клиент подключился");
+        LOGGER.info("Client is connecting...");
         new ClientHandler(this, socket);
       }
     } catch (IOException e) {
-      System.out.println("Ошибка в работе сервера");
+      LOGGER.error(e);
     } finally {
       if (authService != null) {
         authService.stop();
+        LOGGER.info("Authentication service stopping");
       }
     }
   }
@@ -54,7 +58,8 @@ public class MyServer {
   }
 
   public synchronized void privateMsg(String msg, String recipient, String sender) {
-    clients.stream().filter(o -> o.getName().equals(recipient) || o.getName().equals(sender)).forEach(o -> o.sendMsg(msg));
+    clients.stream().filter(o -> o.getName().equals(recipient)
+        || o.getName().equals(sender)).forEach(o -> o.sendMsg(msg));
   }
 
   public synchronized void sendOnlineClients() {

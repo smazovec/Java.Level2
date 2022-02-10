@@ -6,14 +6,17 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.geekbrains.java.service.MyServer;
 
 public class ClientHandler {
 
-  private final MyServer myServer;
-  private final Socket socket;
-  private final DataInputStream in;
-  private final DataOutputStream out;
+  private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class);
+  private MyServer myServer;
+  private Socket socket;
+  private DataInputStream in;
+  private DataOutputStream out;
   private boolean authenticated;
 
   private String name;
@@ -35,14 +38,14 @@ public class ClientHandler {
           authentication();
           readMessages();
         } catch (IOException e) {
-          e.printStackTrace();
+          LOGGER.error(e);
         } finally {
           closeConnection();
         }
       });
       service.shutdown();
     } catch (IOException e) {
-      throw new RuntimeException("Проблемы при создании обработчика клиента");
+      LOGGER.error(e);
     }
   }
 
@@ -53,6 +56,7 @@ public class ClientHandler {
         if (System.currentTimeMillis() - a > 120000) {
           sendMsg("Отключен по таймауту");
           sendMsg("/end");
+          LOGGER.info("client disconnected by timeout");
           return;
         } else if (isAuthenticated()) {
           return;
@@ -72,15 +76,18 @@ public class ClientHandler {
             sendMsg("/authok;" + nick);
             name = nick;
             setAuthenticated(true);
+            LOGGER.info("client logged into the chat");
             myServer.broadcastMsg(name + " зашел в чат");
             myServer.subscribe(this);
             myServer.sendOnlineClients();
             return;
           } else {
             sendMsg("Учетная запись уже используется");
+            LOGGER.info("account is already in use");
           }
         } else {
           sendMsg("Неверные логин/пароль");
+          LOGGER.info("Invalid login/password");
         }
       } else if (str.startsWith("/end")) {
         sendMsg("/end");
@@ -110,7 +117,7 @@ public class ClientHandler {
     try {
       out.writeUTF(msg);
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.error(e);
     }
   }
 
@@ -118,20 +125,21 @@ public class ClientHandler {
     sendMsg("/end");
     myServer.unsubscribe(this);
     myServer.broadcastMsg(name + " вышел из чата");
+    LOGGER.info("Client exited the chat");
     try {
       in.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.error(e);
     }
     try {
       out.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.error(e);
     }
     try {
       socket.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.error(e);
     }
   }
 
