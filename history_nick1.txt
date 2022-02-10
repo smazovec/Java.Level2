@@ -1,0 +1,123 @@
+Первое сообщение
+nick1: hi all!
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+nick2 вышел из чата
+nick1: hi all!
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+Первым должно быть это собщение
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+nick2 вышел из чата
+nick1: hi all!
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+nick2 вышел из чата
+nick1: hi all!
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+nick2 вышел из чата
+nick1: hi all!
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+nick2 вышел из чата
+nick1: hi all!
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+nick2 вышел из чата
+nick1: hi all!
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+nick2 вышел из чата
+nick1: hi all!
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+nick2 вышел из чата
+nick1: hi all!
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+nick2 вышел из чата
+nick1: hi all!
+nick1: sdfsdfsad
+nick1: sdfasdfa
+nick2 зашел в чат
+nick2: sdfasdf
+nick2: sdfsadf
+nick2 вышел из чата
+nick1: hiiii
+nick2 зашел в чат
+nick2: hiiii
+nick2 вышел из чата
+Последнее сообщние
+nick1: !!!
