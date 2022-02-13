@@ -1,2 +1,10 @@
 nick2: hi nick1!!!
 nick1 вышел из чата
+nick2: dctv
+nick2: dfgdfsgdfgdf
+nick3 зашел в чат
+nick3: ewrewqrqwer
+nick3: everising
+nick3 вышел из чата
+nick3 зашел в чат
+nick3 вышел из чата

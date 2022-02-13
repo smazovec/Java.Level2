@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.geekbrains.java.handler.ClientHandler;
@@ -24,15 +26,19 @@ public class MyServer {
 
   public MyServer() {
     LOGGER.info("Server is run");
-    try (ServerSocket server = new ServerSocket(PORT)) {
+    ExecutorService service = Executors.newCachedThreadPool();
+
+    try (ServerSocket server = new ServerSocket(PORT);
+    ) {
       authService = new BaseAuthService();
       authService.start();
+
       clients = new ArrayList<>();
       while (true) {
         LOGGER.info("Server waiting connection...");
         Socket socket = server.accept();
         LOGGER.info("Client is connecting...");
-        new ClientHandler(this, socket);
+        new ClientHandler(this, socket, service);
       }
     } catch (IOException e) {
       LOGGER.error(e);
@@ -41,6 +47,7 @@ public class MyServer {
         authService.stop();
         LOGGER.info("Authentication service stopping");
       }
+      service.shutdown();
     }
   }
 

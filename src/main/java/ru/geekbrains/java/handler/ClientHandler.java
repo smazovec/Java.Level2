@@ -25,14 +25,13 @@ public class ClientHandler {
     return name;
   }
 
-  public ClientHandler(MyServer myServer, Socket socket) {
+  public ClientHandler(MyServer myServer, Socket socket, ExecutorService service) {
     try {
       this.myServer = myServer;
       this.socket = socket;
       this.in = new DataInputStream(socket.getInputStream());
       this.out = new DataOutputStream(socket.getOutputStream());
       this.name = "";
-      ExecutorService service = Executors.newFixedThreadPool(1);
       service.execute(() -> {
         try {
           authentication();
@@ -43,7 +42,6 @@ public class ClientHandler {
           closeConnection();
         }
       });
-      service.shutdown();
     } catch (IOException e) {
       LOGGER.error(e);
     }
